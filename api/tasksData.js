@@ -53,7 +53,7 @@ const exportedMethods = {
       { projection: { _id: 1, tasks: 1 } }
     );
     if (!dbUser) throw new Error(`User Doesnot exists for ID: ${userID}`);
-    let allTasks = dbUser.tasks.toArray();
+    let allTasks = dbUser.tasks;
     allTasks.map((task) => (task._id = task._id.toString()));
     return allTasks;
   },
@@ -75,6 +75,8 @@ const exportedMethods = {
 
     if (!dbUserInfo.acknowledged || dbUserInfo.modifiedCount !== 1)
       throw new Error("Failed to Remove Tasks");
+
+    return { taskID, deleted: true };
   },
 };
 

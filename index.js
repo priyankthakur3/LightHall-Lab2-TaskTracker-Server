@@ -18,8 +18,6 @@ app.use("/api", (req, res, next) => {
       /* decode jwt token if authorized*/
 
       jwt.verify(req.headers.token, "shhhhh11111", function (err, decoded) {
-        console.log(req.headers);
-        console.log(decoded);
         if (decoded && decoded.user) {
           req.user = decoded;
           next();
@@ -41,6 +39,5 @@ app.use("/api", (req, res, next) => {
 
 app.use("/api", loginRoutes);
 app.use("/api/tasks", taskRoutes);
-
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`Server is running in port ${PORT}`));

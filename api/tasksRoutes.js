@@ -1,8 +1,50 @@
 const express = require("express");
 const taskData = require("./tasksData");
-const { checkString, checkTaskStatus } = require("./validations");
+const { checkString, checkTaskStatus, checkId } = require("./validations");
 const router = express.Router();
 
+router.get("/getall", async (req, res) => {
+  if (!req.user || !req.user.id) {
+    return res
+      .status(401)
+      .json({ errorMessage: "User unauthorized!", status: false });
+  }
+  try {
+    let allUserTask = await taskData.getAllTaskUser(req.user.id);
+    return res.json({
+      tasksCount: allUserTask.length,
+      status: true,
+      taskData: allUserTask,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ error });
+  }
+});
+
+router.delete("/delete", async (req, res) => {
+  if (!req.user || !req.user.id) {
+    return res
+      .status(401)
+      .json({ errorMessage: "User unauthorized!", status: false });
+  }
+  let taskID;
+  try {
+    taskID = checkId(req.body.taskID);
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ error });
+  }
+
+  let taskDeletedInfo;
+  try {
+    taskDeletedInfo = await taskData.removeTask(taskID);
+    return res.json(taskDeletedInfo);
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json(error);
+  }
+});
 router.post("/create", async (req, res) => {
   let taskTitle, taskDesc, taskStatus, taskDue;
   if (!req.user || !req.user.id) {
@@ -39,24 +81,6 @@ router.post("/create", async (req, res) => {
     }
   } catch (error) {
     return res.status(500).json({ error });
-  }
-});
-
-router.get("/allTasks", async (req, res) => {
-  if (!req.user || !req.user.id) {
-    return res
-      .status(401)
-      .json({ errorMessage: "User unauthorized!", status: false });
-  }
-  try {
-    let allUserTask = await taskData.getAllTaskUser(req.user.id);
-    return res.json({
-      tasksCount: allUserTask.length,
-      status: true,
-      taskData: allUserTask,
-    });
-  } catch (error) {
-    return res.status(400).json({ error });
   }
 });
 
