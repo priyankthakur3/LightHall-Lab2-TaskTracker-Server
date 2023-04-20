@@ -17,27 +17,28 @@ router.post("/create", async (req, res) => {
     taskDue = checkString(req.body.taskDue, "Task Due");
   } catch (error) {
     console.error(error);
-    return res.status(400).json({ error: error.message });
+    return res.status(400).json({ error });
   }
 
   let newTaskObj;
   try {
-    newTaskObj = taskData.createTask(
+    newTaskObj = await taskData.createTask(
       req.user.id,
       taskTitle,
       taskDesc,
       taskStatus,
       taskDue
     );
+    console.log(newTaskObj);
     if (!newTaskObj)
       return res
         .status(500)
         .json({ errorMessage: "Something went wrong!", status: false });
     else {
-      return res.json({ taskCreated: true });
+      return res.json({ taskCreated: true, taskData: newTaskObj });
     }
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ error });
   }
 });
 
@@ -55,7 +56,7 @@ router.get("/allTasks", async (req, res) => {
       taskData: allUserTask,
     });
   } catch (error) {
-    return res.status(400).json({ error: error.message });
+    return res.status(400).json({ error });
   }
 });
 

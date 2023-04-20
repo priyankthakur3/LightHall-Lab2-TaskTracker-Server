@@ -38,9 +38,11 @@ const exportedMethods = {
 
     if (newTaskCreated.lastErrorObject.n === 0)
       throw new Error("Failed to Add Task");
-    newTaskCreated = newTaskCreated.value.task.filter(
-      (task) => task._id.toString() === taskID.toString()
-    );
+
+    newTaskCreated = newTaskCreated.value.tasks;
+    newTaskCreated = newTaskCreated.filter((task) => {
+      return task._id.toString() === taskID.toString(taskID);
+    });
     return newTaskCreated;
   },
   async getAllTaskUser(userID) {

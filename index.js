@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api", (req, res, next) => {
   try {
-    if (req.path == "/api/login" || req.path == "/api/register") {
+    if (req.path == "/login" || req.path == "/register") {
       next();
     } else {
       /* decode jwt token if authorized*/
