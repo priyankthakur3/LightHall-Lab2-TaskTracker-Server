@@ -27,6 +27,21 @@ const exportedMethods = {
       throw new Error(`Expected email id to be of Stevens`);
     return emailid;
   },
+  checkTaskStatus(taskStatus) {
+    if (
+      !taskStatus ||
+      typeof taskStatus !== "string" ||
+      taskStatus.trim().length === 0
+    )
+      throw new Error("Error: Expecteed Task Value");
+    taskStatus = taskStatus.trim().toLowerCase();
+    const taskList = ["todo", "progress", "waitlist", "completed"];
+    if (!taskList.includes(taskStatus))
+      throw new Error(
+        `Expected: Task Status to be either of ${taskList.join(",")}`
+      );
+    return taskStatus;
+  },
 };
 
 module.exports = exportedMethods;

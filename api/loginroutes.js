@@ -16,7 +16,7 @@ function checkUserAndGenerateToken(data, req, res) {
           errorMessage: err,
         });
       } else {
-        res.json({
+        res.set("Access-Control-Allow-Origin", "*").json({
           message: "Login Successfully.",
           token: token,
           status: true,
@@ -67,6 +67,11 @@ router.post("/register", async (req, res) => {
   if (userCreated) {
     return res.json({ status: "User Created" });
   }
+});
+
+router.post("/logout", async (req, res) => {
+  const { token } = req.body;
+  console.log(token);
 });
 
 router.get("/", (req, res) => {
