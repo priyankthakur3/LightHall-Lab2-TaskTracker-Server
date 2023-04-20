@@ -58,6 +58,69 @@ const exportedMethods = {
     return allTasks;
   },
 
+  async getTask(taskID) {
+    taskID = validations.checkId(taskID);
+    const usersCollection = await users();
+    let dbUser = await usersCollection.findOne({
+      "tasks._id": new ObjectId(taskID),
+    });
+    if (!dbUser) return undefined;
+
+    let taskObj = dbUser.tasks;
+    taskObj = taskObj.filter((task) => {
+      return task._id.toString() === taskID.toString(taskID);
+    });
+
+    return taskObj;
+  },
+  async updateTaskStatus(taskID, taskStatus) {
+    taskID = validations.checkId(taskID);
+    taskStatus = validations.checkTaskStatus(taskStatus);
+    const usersCollection = await users();
+    let dbUser = await usersCollection.findOne(
+      { "tasks._id": new ObjectId(taskID) },
+      { projection: { _id: 1 } }
+    );
+    if (!dbUser) return undefined;
+    const dbUserInfo = await usersCollection.updateOne(
+      { "tasks._id": new ObjectId(taskID) },
+      {
+        $set: { "tasks.taskStatus": taskStatus },
+      }
+    );
+
+    if (!dbUserInfo.acknowledged || dbUserInfo.modifiedCount !== 1)
+      throw new Error("Failed to Update Tasks");
+
+    return { taskID, updated: true };
+  },
+
+  async updateTask(taskID, taskTitle, taskDesc, taskStatus, taskDue) {
+    taskID = validations.checkId(taskID);
+    taskTitle = validations.checkString(taskTitle, "Task Title");
+    taskDesc = validations.checkString(taskDesc, "Task Description");
+    taskStatus = validations.checkTaskStatus(taskStatus);
+    taskDue = taskDue;
+
+    const usersCollection = await users();
+    let dbUser = await usersCollection.findOne(
+      { "tasks._id": new ObjectId(taskID) },
+      { projection: { _id: 1 } }
+    );
+    if (!dbUser) return undefined;
+    const dbUserInfo = await usersCollection.updateOne(
+      { "tasks._id": new ObjectId(taskID) },
+      {
+        $set: { taskTitle, taskDesc, taskStatus, taskDue },
+      }
+    );
+
+    if (!dbUserInfo.acknowledged || dbUserInfo.modifiedCount !== 1)
+      throw new Error("Failed to Update Tasks");
+
+    return { taskID, updated: true };
+  },
+
   async removeTask(taskID) {
     taskID = validations.checkId(taskID);
     const usersCollection = await users();

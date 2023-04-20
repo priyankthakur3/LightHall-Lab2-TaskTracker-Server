@@ -84,4 +84,86 @@ router.post("/create", async (req, res) => {
   }
 });
 
+router.put("/updateStatus", async (req, res) => {
+  if (!req.user || !req.user.id) {
+    return res
+      .status(401)
+      .json({ errorMessage: "User unauthorized!", status: false });
+  }
+  let taskID, taskStatus;
+  try {
+    taskID = checkId(req.body.taskID);
+    taskStatus = checkTaskStatus(req.body.taskStatus);
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ error });
+  }
+
+  try {
+    let updateTaskStatus = await taskData.updateTaskStatus(taskID, taskStatus);
+    if (!updateTaskStatus)
+      return res
+        .status(404)
+        .json({ error: `Task Doesnot exists for ID ${taskID}` });
+  } catch (error) {
+    return res.status(500).json({ error });
+  }
+});
+
+router.put("/update", async (req, res) => {
+  let taskID, taskTitle, taskDesc, taskStatus, taskDue;
+  if (!req.user || !req.user.id) {
+    return res
+      .status(401)
+      .json({ errorMessage: "User unauthorized!", status: false });
+  }
+  try {
+    taskID = validations.checkId(taskID);
+    taskTitle = checkString(req.body.taskTitle, "Task Title");
+    taskDesc = checkString(req.body.taskDesc, "Task Description");
+    taskStatus = checkTaskStatus(req.body.taskStatus);
+    taskDue = checkString(req.body.taskDue, "Task Due");
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({ error });
+  }
+
+  try {
+    let updatedInfo = await taskData.updateTask(
+      taskID,
+      taskTitle,
+      taskDesc,
+      taskStatus,
+      taskDue
+    );
+    if (!updatedInfo)
+      return res
+        .status(404)
+        .json({ error: `Task Doesnot exists for ID ${taskID}` });
+  } catch (error) {
+    return res.status(500).json({ error });
+  }
+});
+
+router.get("/", async (req, res) => {
+  if (!req.user || !req.user.id) {
+    return res
+      .status(401)
+      .json({ errorMessage: "User unauthorized!", status: false });
+  }
+  let taskID;
+  try {
+    taskID = checkId(req.body.taskID);
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ error });
+  }
+  try {
+    let taskObj = await taskData.getTask(taskID);
+    if (!taskObj) return res.status(404).json({ error: "Task Not Found" });
+  } catch (error) {
+    return res.status(500).json({ error: error });
+  }
+});
+
 module.exports = router;
