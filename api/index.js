@@ -1,11 +1,14 @@
 import express from "express";
 import configRoutes from "./routes/index.js";
 import { config } from "dotenv";
+import jwt from "jsonwebtoken";
+import cors from "cors";
 
 config({ path: ".env" });
 
 const app = express();
 const port = process.env.PORT || 9001;
+app.use(cors());
 app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));

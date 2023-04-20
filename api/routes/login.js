@@ -27,7 +27,7 @@ function checkUserAndGenerateToken(data, req, res) {
   );
 }
 
-router.route("/login").post(async (req, res) => {
+router.post("/login", async (req, res) => {
   let username, password;
   try {
     username = validations.checkMail(req.body.username);
@@ -48,7 +48,7 @@ router.route("/login").post(async (req, res) => {
   }
 });
 
-router.route("/register").post(async (req, res) => {
+router.post("/register", async (req, res) => {
   let username = req.body.username;
   let password = req.body.password;
   try {
@@ -69,6 +69,13 @@ router.route("/register").post(async (req, res) => {
   if (userCreated) {
     return res.json({ status: "User Created" });
   }
+});
+
+router.get("/", (req, res) => {
+  res.status(200).json({
+    status: true,
+    title: "Apis",
+  });
 });
 
 export default router;
