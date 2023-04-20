@@ -1,10 +1,14 @@
 const express = require("express");
 const app = express();
-const product = require("./api/product");
+const cors = require("cors");
+const loginroutes = require("./api/loginroutes");
+require("dotenv").config();
 
-app.use(express.json({ extended: false }));
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.use("/api/product", product);
+app.use("/api/", loginroutes);
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`Server is running in port ${PORT}`));
