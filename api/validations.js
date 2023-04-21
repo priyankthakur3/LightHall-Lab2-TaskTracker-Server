@@ -1,8 +1,10 @@
 const { ObjectId } = require("mongodb");
 const exportedMethods = {
   checkId(id, varName) {
-    if (!id) throw `Error: You must provide an ${varName} id to search for`;
-    if (typeof id !== "string") throw `Error:${varName} must be a string`;
+    if (!id)
+      throw new Error(`Error: You must provide an ${varName} id to search for`);
+    if (typeof id !== "string")
+      throw new Error(`Error:${varName} must be a string`);
     id = id.trim();
     if (id.length === 0)
       throw new Error(
@@ -12,8 +14,9 @@ const exportedMethods = {
     return id;
   },
   checkString(strVal, varName) {
-    if (!strVal) throw `Error: You must supply a ${varName}!`;
-    if (typeof strVal !== "string") throw `Error: ${varName} must be a string!`;
+    if (!strVal) throw new Error(`Error: You must supply a ${varName}!`);
+    if (typeof strVal !== "string")
+      throw new Error(`Error: ${varName} must be a string!`);
     strVal = strVal.trim();
     if (strVal.length === 0)
       throw new Error(
