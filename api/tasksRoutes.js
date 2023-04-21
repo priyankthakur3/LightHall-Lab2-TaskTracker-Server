@@ -118,7 +118,7 @@ router.put("/update", async (req, res) => {
       .json({ errorMessage: "User unauthorized!", status: false });
   }
   try {
-    taskID = validations.checkId(taskID);
+    taskID = checkId(req.body.taskID);
     taskTitle = checkString(req.body.taskTitle, "Task Title");
     taskDesc = checkString(req.body.taskDesc, "Task Description");
     taskStatus = checkTaskStatus(req.body.taskStatus);
@@ -140,6 +140,7 @@ router.put("/update", async (req, res) => {
       return res
         .status(404)
         .json({ error: `Task Doesnot exists for ID ${taskID}` });
+    return res.json({ taskID, updated: true });
   } catch (error) {
     return res.status(500).json({ error });
   }

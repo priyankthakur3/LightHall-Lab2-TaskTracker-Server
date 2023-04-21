@@ -115,7 +115,7 @@ const exportedMethods = {
       }
     );
 
-    if (!dbUserInfo.acknowledged || dbUserInfo.modifiedCount !== 1)
+    if (!dbUserInfo.acknowledged || dbUserInfo.modifiedCount === 1)
       throw new Error("Failed to Update Tasks");
 
     return { taskID, updated: true };
