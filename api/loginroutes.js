@@ -43,7 +43,7 @@ router.post("/login", async (req, res) => {
     dbUser = await userData.checkUser(username, password);
     checkUserAndGenerateToken(dbUser, req, res);
   } catch (err) {
-    return res.status(400).json({ err: err.message });
+    return res.status(400).json({ error: err.message });
   }
 });
 
