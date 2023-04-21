@@ -9,7 +9,7 @@ const exportedMethods = {
     taskTitle = validations.checkString(taskTitle, "Task Title");
     taskDesc = validations.checkString(taskDesc, "Task Description");
     taskStatus = validations.checkTaskStatus(taskStatus);
-    taskDue = taskDue;
+    taskDue = validations.checkDate(taskDue, "Task Due");
 
     const usersCollection = await users();
     let dbUser = await usersCollection.findOne(
@@ -100,7 +100,7 @@ const exportedMethods = {
     taskTitle = validations.checkString(taskTitle, "Task Title");
     taskDesc = validations.checkString(taskDesc, "Task Description");
     taskStatus = validations.checkTaskStatus(taskStatus);
-    taskDue = taskDue;
+    taskDue = validations.checkDate(taskDue, "Task Due");
 
     const usersCollection = await users();
     let dbUser = await usersCollection.findOne(

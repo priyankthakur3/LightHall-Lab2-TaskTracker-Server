@@ -1,6 +1,11 @@
 const express = require("express");
 const taskData = require("./tasksData");
-const { checkString, checkTaskStatus, checkId } = require("./validations");
+const {
+  checkString,
+  checkTaskStatus,
+  checkId,
+  checkString,
+} = require("./validations");
 const router = express.Router();
 
 router.get("/getall", async (req, res) => {

@@ -19,6 +19,7 @@ function checkUserAndGenerateToken(data, req, res) {
         res.set("Access-Control-Allow-Origin", "*").json({
           message: "Login Successfully.",
           token: token,
+          username: data.username,
           status: true,
         });
       }
@@ -28,7 +29,7 @@ function checkUserAndGenerateToken(data, req, res) {
 router.post("/login", async (req, res) => {
   let username, password;
   try {
-    username = validations.checkMail(req.body.username);
+    username = validations.isStringName(req.body.username);
     password = validations.checkString(req.body.password);
   } catch (error) {
     return req.status(400).json({ error });
@@ -50,7 +51,7 @@ router.post("/register", async (req, res) => {
   let username = req.body.username;
   let password = req.body.password;
   try {
-    username = validations.checkString(username, "user_name");
+    username = validations.isStringName(username, "user_name");
     password = validations.checkString(password, "user_password");
   } catch (error) {
     return res.status(400).json({ error });

@@ -5,7 +5,7 @@ const passwordEncryptRounds = 10;
 
 const exportedMethods = {
   async createUser(username, password) {
-    username = validations.checkString(username, "User Name");
+    username = validations.isStringName(username, "User Name");
     password = validations.checkString(password, "Password");
     let hashpassword = await bcrypt.hash(password, passwordEncryptRounds);
     const usersCollection = await users();
@@ -24,7 +24,7 @@ const exportedMethods = {
   },
 
   async checkUser(username, password) {
-    username = validations.checkMail(username);
+    username = validations.isStringName(username);
     password = validations.checkString(password);
     const usersCollection = await users();
 
@@ -42,7 +42,7 @@ const exportedMethods = {
     };
   },
   async checkIfUserExists(username) {
-    username = validations.checkString(username, "User Name");
+    username = validations.isStringName(username, "User Name");
 
     const usersCollection = await users();
     let dbUser = await usersCollection.findOne(
