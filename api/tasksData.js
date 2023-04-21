@@ -83,9 +83,9 @@ const exportedMethods = {
     );
     if (!dbUser) return undefined;
     const dbUserInfo = await usersCollection.updateOne(
-      { "tasks._id": new ObjectId(taskID) },
+      { _id: dbUser._id, "tasks._id": new ObjectId(taskID) },
       {
-        $set: { taskStatus },
+        $set: { "tasks.$.taskStatus": taskStatus },
       }
     );
 
@@ -111,7 +111,12 @@ const exportedMethods = {
     const dbUserInfo = await usersCollection.updateOne(
       { "tasks._id": new ObjectId(taskID) },
       {
-        $set: { taskTitle, taskDesc, taskStatus, taskDue },
+        $set: {
+          "tasks.$.taskTitle": taskTitle,
+          "tasks.$.taskDesc": taskDesc,
+          "tasks.$.taskDue": taskDue,
+          "tasks.$.taskStatus": taskStatus,
+        },
       }
     );
 
