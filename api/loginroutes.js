@@ -29,10 +29,10 @@ function checkUserAndGenerateToken(data, req, res) {
 router.post("/login", async (req, res) => {
   let username, password;
   try {
-    username = validations.isStringName(req.body.username);
+    username = validations.isStringName(req.body.username, "User Name");
     password = validations.checkString(req.body.password);
   } catch (error) {
-    return req.status(400).json({ error });
+    return res.status(400).json({ error: error.message });
   }
   if (!(await userData.checkIfUserExists(username)))
     return res
@@ -43,7 +43,7 @@ router.post("/login", async (req, res) => {
     dbUser = await userData.checkUser(username, password);
     checkUserAndGenerateToken(dbUser, req, res);
   } catch (err) {
-    return res.status(400).json(err.message);
+    return res.status(400).json({ err: err.message });
   }
 });
 
@@ -54,7 +54,7 @@ router.post("/register", async (req, res) => {
     username = validations.isStringName(username, "user_name");
     password = validations.checkString(password, "user_password");
   } catch (error) {
-    return res.status(400).json({ error });
+    return res.status(400).json({ error: error.message });
   }
 
   if (await userData.checkIfUserExists(username))
@@ -63,7 +63,7 @@ router.post("/register", async (req, res) => {
   try {
     userCreated = await userData.createUser(username, password);
   } catch (error) {
-    return res.status(500).json({ error });
+    return res.status(500).json({ error: error.message });
   }
   if (userCreated) {
     return res.json({ status: "User Created" });

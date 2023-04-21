@@ -18,7 +18,7 @@ router.get("/getall", async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(400).json({ error });
+    return res.status(400).json({ error: error.message });
   }
 });
 
@@ -33,7 +33,7 @@ router.delete("/delete", async (req, res) => {
     taskID = checkId(req.body.taskID);
   } catch (error) {
     console.log(error);
-    return res.status(400).json({ error });
+    return res.status(400).json({ error: error.message });
   }
 
   let taskDeletedInfo;
@@ -42,7 +42,7 @@ router.delete("/delete", async (req, res) => {
     return res.json(taskDeletedInfo);
   } catch (error) {
     console.log(error);
-    return res.status(400).json(error);
+    return res.status(400).json({ error: error.message });
   }
 });
 router.post("/create", async (req, res) => {
@@ -59,7 +59,7 @@ router.post("/create", async (req, res) => {
     taskDue = checkString(req.body.taskDue, "Task Due");
   } catch (error) {
     console.error(error);
-    return res.status(400).json({ error });
+    return res.status(400).json({ error: error.message });
   }
 
   let newTaskObj;
@@ -80,7 +80,7 @@ router.post("/create", async (req, res) => {
       return res.json({ taskCreated: true, taskData: newTaskObj });
     }
   } catch (error) {
-    return res.status(500).json({ error });
+    return res.status(500).json({ error: error.message });
   }
 });
 
@@ -96,7 +96,7 @@ router.put("/updateStatus", async (req, res) => {
     taskStatus = checkTaskStatus(req.body.taskStatus);
   } catch (error) {
     console.log(error);
-    return res.status(400).json({ error });
+    return res.status(400).json({ error: error.message });
   }
 
   try {
@@ -107,7 +107,7 @@ router.put("/updateStatus", async (req, res) => {
         .json({ error: `Task Doesnot exists for ID ${taskID}` });
     return res.json({ taskID, updated: true });
   } catch (error) {
-    return res.status(500).json({ error });
+    return res.status(500).json({ error: error.message });
   }
 });
 
@@ -126,7 +126,7 @@ router.put("/update", async (req, res) => {
     taskDue = checkString(req.body.taskDue, "Task Due");
   } catch (error) {
     console.error(error);
-    return res.status(400).json({ error });
+    return res.status(400).json({ error: error.message });
   }
 
   try {
@@ -143,7 +143,7 @@ router.put("/update", async (req, res) => {
         .json({ error: `Task Doesnot exists for ID ${taskID}` });
     return res.json({ taskID, updated: true });
   } catch (error) {
-    return res.status(500).json({ error });
+    return res.status(500).json({ error: error.message });
   }
 });
 
@@ -158,13 +158,13 @@ router.get("/", async (req, res) => {
     taskID = checkId(req.body.taskID);
   } catch (error) {
     console.log(error);
-    return res.status(400).json({ error });
+    return res.status(400).json({ error: error.message });
   }
   try {
     let taskObj = await taskData.getTask(taskID);
     if (!taskObj) return res.status(404).json({ error: "Task Not Found" });
   } catch (error) {
-    return res.status(500).json({ error: error });
+    return res.status(500).json({ error: error.message });
   }
 });
 

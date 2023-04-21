@@ -24,7 +24,7 @@ const exportedMethods = {
   },
 
   async checkUser(username, password) {
-    username = validations.isStringName(username);
+    username = validations.isStringName(username, "User Name");
     password = validations.checkString(password);
     const usersCollection = await users();
 
