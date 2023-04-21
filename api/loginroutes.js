@@ -51,8 +51,8 @@ router.post("/register", async (req, res) => {
   let username = req.body.username;
   let password = req.body.password;
   try {
-    username = validations.isStringName(username, "user_name");
-    password = validations.checkString(password, "user_password");
+    username = validations.isStringName(username, "Username");
+    password = validations.checkString(password, "Password");
   } catch (error) {
     return res.status(400).json({ error: error.message });
   }
