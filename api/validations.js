@@ -35,7 +35,7 @@ const exportedMethods = {
     )
       throw new Error("Error: Expecteed Task Value");
     taskStatus = taskStatus.trim().toLowerCase();
-    const taskList = ["todo", "progress", "waitlist", "completed"];
+    const taskList = ["todo", "progress", "waitlist", "done"];
     if (!taskList.includes(taskStatus))
       throw new Error(
         `Expected: Task Status to be either of ${taskList.join(",")}`

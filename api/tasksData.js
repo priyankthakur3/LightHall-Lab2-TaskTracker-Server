@@ -85,11 +85,11 @@ const exportedMethods = {
     const dbUserInfo = await usersCollection.updateOne(
       { "tasks._id": new ObjectId(taskID) },
       {
-        $set: { "tasks.taskStatus": taskStatus },
+        $set: { taskStatus },
       }
     );
 
-    if (!dbUserInfo.acknowledged || dbUserInfo.modifiedCount !== 1)
+    if (!dbUserInfo.acknowledged || !dbUserInfo.modifiedCount === 1)
       throw new Error("Failed to Update Tasks");
 
     return { taskID, updated: true };
@@ -115,7 +115,7 @@ const exportedMethods = {
       }
     );
 
-    if (!dbUserInfo.acknowledged || dbUserInfo.modifiedCount === 1)
+    if (!dbUserInfo.acknowledged || !dbUserInfo.modifiedCount === 1)
       throw new Error("Failed to Update Tasks");
 
     return { taskID, updated: true };

@@ -105,6 +105,7 @@ router.put("/updateStatus", async (req, res) => {
       return res
         .status(404)
         .json({ error: `Task Doesnot exists for ID ${taskID}` });
+    return res.json({ taskID, updated: true });
   } catch (error) {
     return res.status(500).json({ error });
   }
