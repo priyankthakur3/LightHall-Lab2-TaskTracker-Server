@@ -30,7 +30,7 @@ router.post("/login", async (req, res) => {
   let username, password;
   try {
     username = validations.isStringName(req.body.username, "User Name");
-    password = validations.checkString(req.body.password);
+    password = validations.checkString(req.body.password, "Password");
   } catch (error) {
     return res.status(400).json({ error: error.message });
   }
